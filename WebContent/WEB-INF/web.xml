@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
-  <display-name>ItemsApp</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
-  
-  <servlet>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	version="4.0">
+	<display-name>ItemsApp</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
 		<servlet-name>Articoli</servlet-name>
 		<servlet-class>it.objectmethod.webapp.servlets.ArticoliServlet</servlet-class>
 	</servlet>
@@ -18,4 +21,14 @@
 		<servlet-name>Articoli</servlet-name>
 		<url-pattern>/TabellaArticoli</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Lotti</servlet-name>
+		<servlet-class>it.objectmethod.webapp.servlets.LottiServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Lotti</servlet-name>
+		<url-pattern>/TabellaLotti</url-pattern>
+	</servlet-mapping>
+	
 </web-app>

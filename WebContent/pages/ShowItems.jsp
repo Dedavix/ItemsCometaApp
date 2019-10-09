@@ -28,9 +28,9 @@ table, th, td {
   </tr>
   <c:forEach items="${items}" var="articolo">
 		<tr>
-		    <td>${articolo.codice}</td>
-		    <td>${articolo.descrizione}</td>
-		    <td>${articolo.quantita_tot}</td>		    
+		    <td><a href = "TabellaLotti?idArticolo=${articolo.id}">${articolo.codice}</a></td>
+		    <td><a href = "TabellaLotti?idArticolo=${articolo.id}">${articolo.descrizione}</a></td>
+		    <td><a href = "TabellaLotti?idArticolo=${articolo.id}">${articolo.quantita_tot}</a></td>		    
 	    </tr>
 	</c:forEach>
 </table>	
