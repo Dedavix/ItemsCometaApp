@@ -12,18 +12,28 @@ import it.objectmethod.webapp.dao.ArticoliDaoInterface;
 import it.objectmethod.webapp.dao.implemention.ArticoliDao;
 import it.objectmethod.webapp.dati.Articolo;
 
-
 public class ArticoliServlet extends HttpServlet {
-	
+
 	protected void doGet(HttpServletRequest richiesta, HttpServletResponse risposta)
 			throws ServletException, IOException {
-		
+
 		ArticoliDaoInterface dao = new ArticoliDao();
 
-		List<Articolo> listaArticoli = dao.getItems();
+		List<Articolo> listaArticoli = dao.getItems("");
 
 		richiesta.setAttribute("items", listaArticoli);
 		richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
 	}
+
+		protected void doPost(HttpServletRequest richiesta, HttpServletResponse risposta)
+				throws ServletException, IOException {
+			
+			ArticoliDaoInterface dao = new ArticoliDao();
+
+			List<Articolo> listaArticoli = dao.getItems(richiesta.getParameter("filtro").toUpperCase());
+
+			richiesta.setAttribute("items", listaArticoli);
+			richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
+		}
 
 }

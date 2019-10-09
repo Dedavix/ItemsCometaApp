@@ -6,6 +6,6 @@ import it.objectmethod.webapp.dati.Articolo;
 
 public interface ArticoliDaoInterface {
 	
-	public List<Articolo> getItems();
+	public List<Articolo> getItems(String filtro);
 
 }

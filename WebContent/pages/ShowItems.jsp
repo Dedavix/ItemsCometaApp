@@ -12,8 +12,14 @@ table, th, td {
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
-<body>
-	<h1>Articoli:</h1>
+<body>	
+	<div align="right" style="margin-top: 50px;">
+		<h1 align = "left">Tabella Articoli:</h1>
+		<form name="form" method="post">
+		    filtra articoli: 
+			<input type="text" name="filtro" formaction="TabellaArticoli"><br><br><br>
+		</form>
+		</div>
 	<table style="width:100%">
   <tr>
     <th>Codice</th>

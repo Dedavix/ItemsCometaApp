@@ -14,7 +14,7 @@ import it.objectmethod.webapp.dati.Articolo;
 public class ArticoliDao implements ArticoliDaoInterface {
 
 	@Override
-	public List<Articolo> getItems() {
+	public List<Articolo> getItems(String filtro) {
 
 		List<Articolo> lista = new ArrayList<Articolo>();
 		PreparedStatement stmt = null;
@@ -27,8 +27,11 @@ public class ArticoliDao implements ArticoliDaoInterface {
 			String sql;
 			sql = "SELECT articoli.id, articoli.codice , articoli.descrizione, coalesce(sum(lotti.quantita),0) as quantita_tot\r\n" + 
 					"FROM cometa_easy.articoli left join cometa_easy.lotti on articoli.id = lotti.id_articolo\r\n" + 
-					"group by(articoli.id)";
+					"group by(articoli.id)\r\n" + 
+					"having articoli.codice like ? or articoli.descrizione like ?";
 			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,"%"+filtro+"%");
+			stmt.setString(2,"%"+filtro+"%");
 			ResultSet rs = stmt.executeQuery();
 
 			// STEP 5: Extract data from result set
