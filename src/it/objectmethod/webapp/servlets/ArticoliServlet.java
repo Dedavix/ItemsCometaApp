@@ -18,22 +18,21 @@ public class ArticoliServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		ArticoliDaoInterface dao = new ArticoliDao();
+		List<Articolo> listaArticoli;
 
-		List<Articolo> listaArticoli = dao.getItems("");
+		if (richiesta.getParameter("filtro") == null) {
+			if (richiesta.getSession().getAttribute("filtroSes") == null) {
+				richiesta.getSession().setAttribute("filtroSes", "");
+			}
+			listaArticoli = dao.getItems((String) richiesta.getSession().getAttribute("filtroSes"));
+		} else {
+			richiesta.getSession().setAttribute("filtroSes", richiesta.getParameter("filtro"));
+			listaArticoli = dao.getItems(((String) richiesta.getSession().getAttribute("filtroSes")).toUpperCase());
+		}
 
 		richiesta.setAttribute("items", listaArticoli);
 		richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
+
 	}
-
-		protected void doPost(HttpServletRequest richiesta, HttpServletResponse risposta)
-				throws ServletException, IOException {
-			
-			ArticoliDaoInterface dao = new ArticoliDao();
-
-			List<Articolo> listaArticoli = dao.getItems(richiesta.getParameter("filtro").toUpperCase());
-
-			richiesta.setAttribute("items", listaArticoli);
-			richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
-		}
 
 }

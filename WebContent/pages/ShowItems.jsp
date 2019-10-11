@@ -15,9 +15,9 @@ table, th, td {
 <body>	
 	<div align="right" style="margin-top: 50px;">
 		<h1 align = "left">Tabella Articoli:</h1>
-		<form name="form" method="post">
+		<form name="form" method="get">
 		    filtra articoli: 
-			<input type="text" name="filtro" formaction="TabellaArticoli"><br><br><br>
+			<input type="text" name="filtro" value ="${sessionScope.filtroSes}" formaction="TabellaArticoli"><br><br><br>
 		</form>
 		</div>
 	<table style="width:100%">
