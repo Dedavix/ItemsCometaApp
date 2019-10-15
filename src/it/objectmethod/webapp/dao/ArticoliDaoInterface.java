@@ -2,6 +2,9 @@ package it.objectmethod.webapp.dao;
 
 import java.util.List;
 
+//Commento a caso
+
+
 import it.objectmethod.webapp.dati.Articolo;
 
 public interface ArticoliDaoInterface {
