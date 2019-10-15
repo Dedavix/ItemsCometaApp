@@ -31,4 +31,13 @@
 		<url-pattern>/TabellaLotti</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>Update</servlet-name>
+		<servlet-class>it.objectmethod.webapp.servlets.UpdateServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Update</servlet-name>
+		<url-pattern>/Modifica</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
