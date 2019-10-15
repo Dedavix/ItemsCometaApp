@@ -8,14 +8,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import it.objectmethod.webapp.dao.ArticoliDaoInterface;
-import it.objectmethod.webapp.dao.InsertDaoInterface;
-import it.objectmethod.webapp.dao.UpdateDaoInterface;
 import it.objectmethod.webapp.dao.implemention.ArticoliDao;
-import it.objectmethod.webapp.dao.implemention.InsertDao;
-import it.objectmethod.webapp.dao.implemention.UpdateDao;
 import it.objectmethod.webapp.dati.Articolo;
 
 public class UpdateServlet extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7315999456188676024L;
 
 	protected void doGet(HttpServletRequest richiesta, HttpServletResponse risposta)
 			throws ServletException, IOException {
@@ -26,49 +27,42 @@ public class UpdateServlet extends HttpServlet {
 
 		if (id != null) {
 			articolo = dao.searchById(id);
-			richiesta.setAttribute("idArticolo", articolo.getId());
-			richiesta.setAttribute("codiceArticolo", articolo.getCodice());
-			richiesta.setAttribute("descrizioneArticolo", articolo.getDescrizione());
-			richiesta.getRequestDispatcher("pages/Update.jsp").forward(richiesta, risposta);
 		} else {
-			richiesta.getRequestDispatcher("pages/Update.jsp").forward(richiesta, risposta);
+			articolo.setId(0);
 		}
-
+		richiesta.setAttribute("articolo", articolo);
+		richiesta.getRequestDispatcher("pages/Update.jsp").forward(richiesta, risposta);
 	}
 
 	protected void doPost(HttpServletRequest richiesta, HttpServletResponse risposta)
 			throws ServletException, IOException {
+		String outputPage = "/TabellaArticoli";
+		String outputMsg = "OPERAZIONE ESEGUITA CON SUCCESSO";
 
-		UpdateDaoInterface daoUp = new UpdateDao();
-	    InsertDaoInterface daoIn = new InsertDao();
+		ArticoliDaoInterface dao = new ArticoliDao();
+
 		String idArticolo = richiesta.getParameter("idArticolo");
 		String codiceArticolo = richiesta.getParameter("codiceArticolo");
 		String descrizioneArticolo = richiesta.getParameter("descrizioneArticolo");
-		if (idArticolo != "") {
-			int validUpdate = daoUp.update(idArticolo, codiceArticolo, descrizioneArticolo);
-			if (validUpdate > 0) {
-				richiesta.getSession().setAttribute("filtroSes", "");
-				richiesta.setAttribute("msg", "OPERAZIONE ESEGUITA CON SUCCESSO");
-			} else {
-				richiesta.setAttribute("msg", "ERRORE");
-			}
-			richiesta.getRequestDispatcher("/TabellaArticoli").forward(richiesta, risposta);
+		
+		int valid = 0;
+		if (!idArticolo.equals("0")) {
+			valid = dao.update(idArticolo, codiceArticolo, descrizioneArticolo);
 		} else {
-			int validInsert = 0;
-			if(daoIn.searchByCode(codiceArticolo).getCodice()==null) {
-				validInsert = daoIn.insert(codiceArticolo, descrizioneArticolo);
-				if (validInsert>0) {
-					richiesta.getSession().setAttribute("filtroSes", "");
-					richiesta.setAttribute("msg", "OPERAZIONE ESEGUITA CON SUCCESSO");
-					richiesta.getRequestDispatcher("/TabellaArticoli").forward(richiesta, risposta);
-				}
-				
-			} else {
-				
-				richiesta.setAttribute("msg", "OPERAZIONE FALLITA");
-				richiesta.getRequestDispatcher("pages/Update.jsp").forward(richiesta, risposta);			
+			Articolo art = dao.searchByCode(codiceArticolo);
+			if (art == null) {
+				valid = dao.insert(codiceArticolo, descrizioneArticolo);
 			}
 		}
+		if (valid > 0) {
+			richiesta.getSession().setAttribute("filtroSes", "");
+		} else {
+			outputMsg = "OPERAZIONE FALLITA";
+			outputPage = "pages/Update.jsp";
+		}
+		
+		richiesta.setAttribute("msg", outputMsg);
+		richiesta.getRequestDispatcher(outputPage).forward(richiesta, risposta);
 
 	}
 

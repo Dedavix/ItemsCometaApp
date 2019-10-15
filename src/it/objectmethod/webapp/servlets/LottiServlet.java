@@ -10,17 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.objectmethod.webapp.dao.LottiDaoInterface;
 import it.objectmethod.webapp.dao.implemention.LottiDao;
-import it.objectmethod.webapp.dati.Articolo;
 import it.objectmethod.webapp.dati.Lotto;
 
-public class LottiServlet extends HttpServlet{
-	
-	
+public class LottiServlet extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6897554787811604376L;
+
 	protected void doGet(HttpServletRequest richiesta, HttpServletResponse risposta)
 			throws ServletException, IOException {
 
 		LottiDaoInterface dao = new LottiDao();
-		String articolo= richiesta.getParameter("idArticolo");
+		String articolo = richiesta.getParameter("idArticolo");
 
 		List<Lotto> listaLotti = dao.getLotti(articolo);
 

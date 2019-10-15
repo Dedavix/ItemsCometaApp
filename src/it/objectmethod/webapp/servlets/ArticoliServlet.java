@@ -13,41 +13,42 @@ import it.objectmethod.webapp.dao.implemention.ArticoliDao;
 import it.objectmethod.webapp.dati.Articolo;
 
 public class ArticoliServlet extends HttpServlet {
-	
-	private List<Articolo> CreaTabella(HttpServletRequest richiesta,HttpServletResponse risposta) {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1078730073374281757L;
+
+	private void processRequest(HttpServletRequest richiesta, HttpServletResponse risposta)
+			throws ServletException, IOException {
+		List<Articolo> listaArticoli = creaTabella(richiesta, risposta);
+		richiesta.setAttribute("items", listaArticoli);
+		richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
+	}
+
+	private List<Articolo> creaTabella(HttpServletRequest richiesta, HttpServletResponse risposta) {
 		ArticoliDaoInterface dao = new ArticoliDao();
 		List<Articolo> listaArticoli;
 
-		if (richiesta.getParameter("filtro") == null) {
-			if (richiesta.getSession().getAttribute("filtroSes") == null) {
-				richiesta.getSession().setAttribute("filtroSes", "");
-			}
-			listaArticoli = dao.getItems((String) richiesta.getSession().getAttribute("filtroSes"));
-		} else {
-			richiesta.getSession().setAttribute("filtroSes", richiesta.getParameter("filtro"));
-			listaArticoli = dao.getItems(((String) richiesta.getSession().getAttribute("filtroSes")).toUpperCase());
+		String filtro = richiesta.getParameter("filtro");
+		if (filtro == null) {
+			filtro = (String) richiesta.getSession().getAttribute("filtroSes");
 		}
-		
+		filtro = (filtro != null) ? filtro.toUpperCase() : "";
+
+		listaArticoli = dao.getItems(filtro);
+		richiesta.getSession().setAttribute("filtroSes", filtro);
 		return listaArticoli;
-		
 	}
 
 	protected void doGet(HttpServletRequest richiesta, HttpServletResponse risposta)
 			throws ServletException, IOException {
-		
-		richiesta.setAttribute("items", CreaTabella(richiesta, risposta));
-		richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
-
-		
+		processRequest(richiesta, risposta);
 	}
-	
+
 	protected void doPost(HttpServletRequest richiesta, HttpServletResponse risposta)
 			throws ServletException, IOException {
-		
-		richiesta.setAttribute("items", CreaTabella(richiesta, risposta));
-		richiesta.getRequestDispatcher("/pages/ShowItems.jsp").forward(richiesta, risposta);
-
+		processRequest(richiesta, risposta);
 	}
-
 
 }

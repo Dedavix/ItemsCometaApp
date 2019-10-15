@@ -12,11 +12,11 @@
 	<p>${msg}</p>
 	<div align="left" style="margin-top: 50px;">
 		<form method="post" action="Modifica">
-		<input type = "hidden" name = "idArticolo" value ="${idArticolo}">
-			Codice : <input type="text" name="codiceArticolo" value="${codiceArticolo}"><br>
+		<input type = "hidden" name = "idArticolo" value ="${articolo.id}">
+			Codice : <input type="text" name="codiceArticolo" value="${articolo.codice}"><br>
 			<br>
 			<br> Descrizione : <input type="text" name="descrizioneArticolo"
-				value="${descrizioneArticolo}"><br>
+				value="${articolo.desrizione}"><br>
 			<br>
 			<br> <input type="submit" value="OK">
 		</form>
