@@ -16,7 +16,7 @@
 			Codice : <input type="text" name="codiceArticolo" value="${articolo.codice}"><br>
 			<br>
 			<br> Descrizione : <input type="text" name="descrizioneArticolo"
-				value="${articolo.desrizione}"><br>
+				value="${articolo.descrizione}"><br>
 			<br>
 			<br> <input type="submit" value="OK">
 		</form>
