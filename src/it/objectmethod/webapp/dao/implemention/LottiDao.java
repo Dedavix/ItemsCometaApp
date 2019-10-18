@@ -9,7 +9,6 @@ import java.util.List;
 
 import it.objectmethod.webapp.config.ConnectionFactory;
 import it.objectmethod.webapp.dao.LottiDaoInterface;
-import it.objectmethod.webapp.dati.Articolo;
 import it.objectmethod.webapp.dati.Lotto;
 
 public class LottiDao implements LottiDaoInterface {

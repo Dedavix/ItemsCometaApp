@@ -5,7 +5,7 @@ public class Articolo {
 	private int id;
 	private String codice;
 	private String descrizione;
-	private int quantita_tot;
+	private int quantitaTot;
 	
 	public int getId() {
 		return id;
@@ -26,9 +26,9 @@ public class Articolo {
 		this.descrizione = descrizione;
 	}
 	public int getQuantita_tot() {
-		return quantita_tot;
+		return quantitaTot;
 	}
 	public void setQuantita_tot(int quantita_tot) {
-		this.quantita_tot = quantita_tot;
+		this.quantitaTot = quantita_tot;
 	}
 }
