@@ -58,7 +58,7 @@ a {
 			<tr>
 				<td><a href="vedilotti?idArticolo=${articolo.id}">${articolo.codice}</a></td>
 				<td><a href="vediLotti?idArticolo=${articolo.id}">${articolo.descrizione}</a></td>
-				<td><a href="vediLotti?idArticolo=${articolo.id}">${articolo.quantita_tot}</a></td>
+				<td><a href="vediLotti?idArticolo=${articolo.id}">${articolo.quantitaTot}</a></td>
 				<td align="center"><a href="modifica?idArticolo=${articolo.id}"><input
 						type="button" value="Modifica"></a></td>
 			</tr>

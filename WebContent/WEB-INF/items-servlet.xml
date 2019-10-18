@@ -15,7 +15,27 @@
 	<context:component-scan
 		base-package="it.objectmethod.webapp" />
 	<mvc:default-servlet-handler />
-
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/cometa_easy?useSSL=false" />
+		<property name="username" value="root" />
+		<property name="password" value="rootroot" />
+	</bean>
+	
+	<bean id="lottiDao"
+		class="it.objectmethod.webapp.dao.implemention.LottiDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="articoliDao"
+		class="it.objectmethod.webapp.dao.implemention.ArticoliDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"

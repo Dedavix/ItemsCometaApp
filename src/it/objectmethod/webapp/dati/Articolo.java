@@ -25,10 +25,10 @@ public class Articolo {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
-	public int getQuantita_tot() {
+	public int getQuantitaTot() {
 		return quantitaTot;
 	}
-	public void setQuantita_tot(int quantita_tot) {
+	public void setQuantitaTot(int quantita_tot) {
 		this.quantitaTot = quantita_tot;
 	}
 }

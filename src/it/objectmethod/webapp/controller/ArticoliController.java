@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.objectmethod.webapp.dao.ArticoliDaoInterface;
-import it.objectmethod.webapp.dao.implemention.ArticoliDao;
 import it.objectmethod.webapp.dati.Articolo;
 import it.objectmethod.webapp.dati.Filtro;
 
@@ -19,12 +18,14 @@ public class ArticoliController {
 
 	@Autowired
 	private Filtro filtro;
+	
+	@Autowired
+	private ArticoliDaoInterface articoliDao;
 
 	private List<Articolo> creaTabella() {
-		ArticoliDaoInterface dao = new ArticoliDao();
 		List<Articolo> listaArticoli;
 		filtro.setFiltro((filtro.getFiltro() != null) ? filtro.getFiltro().toUpperCase() : "");
-		listaArticoli = dao.getItems(filtro.getFiltro());
+		listaArticoli = articoliDao.getItems(filtro.getFiltro());
 		return listaArticoli;
 	}
 
@@ -43,9 +44,8 @@ public class ArticoliController {
 	@RequestMapping("/modifica")
 	public String mostraForm(@RequestParam(value = "idArticolo", required = false) String id, ModelMap model) {
 		Articolo articolo = new Articolo();
-		ArticoliDaoInterface dao = new ArticoliDao();
 		if (id != null) {
-			articolo = dao.searchById(id);
+			articolo = articoliDao.searchById(id);
 		} else {
 			articolo.setId(0);
 		}
@@ -59,15 +59,13 @@ public class ArticoliController {
 			@RequestParam("descrizioneArticolo") String descrizioneArticolo, ModelMap model) {
 		String outputPage = "forward:/index";
 		String outputMsg = "OPERAZIONE ESEGUITA CON SUCCESSO";
-
-		ArticoliDaoInterface dao = new ArticoliDao();
 		int valid = 0;
 		if (!idArticolo.equals("0")) {
-			valid = dao.update(idArticolo, codiceArticolo, descrizioneArticolo);
+			valid = articoliDao.update(idArticolo, codiceArticolo, descrizioneArticolo);
 		} else {
-			Articolo art = dao.searchByCode(codiceArticolo);
+			Articolo art = articoliDao.searchByCode(codiceArticolo);
 			if (art == null) {
-				valid = dao.insert(codiceArticolo, descrizioneArticolo);
+				valid = articoliDao.insert(codiceArticolo, descrizioneArticolo);
 			}
 		}
 		if (valid > 0) {
