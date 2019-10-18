@@ -13,7 +13,7 @@
  
 	<mvc:annotation-driven />
 	<context:component-scan
-		base-package="it.objectmethod.controller" />
+		base-package="it.objectmethod.webapp" />
 	<mvc:default-servlet-handler />
  
 	<bean id="viewResolver"

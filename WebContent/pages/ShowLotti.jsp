@@ -29,7 +29,7 @@ table, th, td {
 		</c:forEach>
 	</table>
 	<div align="right" style="margin-down: 50px;">
-		<p><a href="TabellaArticoli"><input type = button value ="Indietro"></a></p>
+		<p><a href="index"><input type = button value ="Indietro"></a></p>
 	</div>
 </body>
 </html>

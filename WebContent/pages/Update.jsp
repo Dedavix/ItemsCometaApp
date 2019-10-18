@@ -11,7 +11,7 @@
 	<h1>Modifica/Inserisci Articolo</h1>
 	<p>${msg}</p>
 	<div align="left" style="margin-top: 50px;">
-		<form method="post" action="Modifica">
+		<form method="post" action="effettuaModifica">
 		<input type = "hidden" name = "idArticolo" value ="${articolo.id}">
 			Codice : <input type="text" name="codiceArticolo" value="${articolo.codice}"><br>
 			<br>
@@ -21,6 +21,5 @@
 			<br> <input type="submit" value="OK">
 		</form>
 	</div>
-
 </body>
 </html>

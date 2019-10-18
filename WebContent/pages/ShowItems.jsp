@@ -35,12 +35,13 @@ a {
 		<p>${msg}</p>
 		<div align="left" style="margin-top: 40px;">
 			<p align="left">
-				<a href="Modifica"><input type=button value="Aggiungi Articolo"></a>
+				<a href="modifica"><input type=button value="Aggiungi Articolo"></a>
 			</p>
 		</div>
-		<form name="form" method="get" action ="TabellaArticoli">
+		<form name="form" method="get" action ="/ItemsApp/index">
 			<b>Filtra Articoli:</b> <input type="text" name="filtro"
-				value="${sessionScope.filtroSes}"><br>
+				value="${sessionScope.filtro.filtro}"><br>
+				<input type="submit">
 			<br>
 			<br>
 		</form>
@@ -55,17 +56,17 @@ a {
 		</tr>
 		<c:forEach items="${items}" var="articolo">
 			<tr>
-				<td><a href="TabellaLotti?idArticolo=${articolo.id}">${articolo.codice}</a></td>
-				<td><a href="TabellaLotti?idArticolo=${articolo.id}">${articolo.descrizione}</a></td>
-				<td><a href="TabellaLotti?idArticolo=${articolo.id}">${articolo.quantita_tot}</a></td>
-				<td align="center"><a href="Modifica?idArticolo=${articolo.id}"><input
+				<td><a href="vedilotti?idArticolo=${articolo.id}">${articolo.codice}</a></td>
+				<td><a href="vediLotti?idArticolo=${articolo.id}">${articolo.descrizione}</a></td>
+				<td><a href="vediLotti?idArticolo=${articolo.id}">${articolo.quantita_tot}</a></td>
+				<td align="center"><a href="modifica?idArticolo=${articolo.id}"><input
 						type="button" value="Modifica"></a></td>
 			</tr>
 		</c:forEach>
 	</table>
 	<div align="left" style="margin-down: 50px;">
 		<p>
-			<a href="Modifica"><input type=button value="Aggiungi Articolo"></a>
+			<a href="modifica"><input type=button value="Aggiungi Articolo"></a>
 		</p>
 	</div>
 </body>

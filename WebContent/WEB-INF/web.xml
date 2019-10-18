@@ -12,32 +12,22 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-
-	<servlet>
-		<servlet-name>Articoli</servlet-name>
-		<servlet-class>it.objectmethod.webapp.servlets.ArticoliServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Articoli</servlet-name>
-		<url-pattern>/TabellaArticoli</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>Lotti</servlet-name>
-		<servlet-class>it.objectmethod.webapp.servlets.LottiServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Lotti</servlet-name>
-		<url-pattern>/TabellaLotti</url-pattern>
-	</servlet-mapping>
 	
-	<servlet>
-		<servlet-name>Update</servlet-name>
-		<servlet-class>it.objectmethod.webapp.servlets.UpdateServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Update</servlet-name>
-		<url-pattern>/Modifica</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>items</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>items</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <listener>
+            <listener-class>
+                    org.springframework.web.context.request.RequestContextListener 
+            </listener-class>
+  </listener>
 	
 </web-app>
