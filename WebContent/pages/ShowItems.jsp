@@ -40,7 +40,7 @@ a {
 		</div>
 		<form name="form" method="get" action ="/ItemsApp/index">
 			<b>Filtra Articoli:</b> <input type="text" name="filtro"
-				value="${sessionScope.filtro.filtro}"><br>
+				value="${filtro}"><br>
 				<input type="submit">
 			<br>
 			<br>
