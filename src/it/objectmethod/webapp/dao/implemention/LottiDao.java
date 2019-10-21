@@ -6,6 +6,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import it.objectmethod.webapp.dao.LottiDaoInterface;
 import it.objectmethod.webapp.dati.Lotto;
 import it.objectmethod.webapp.dati.mapper.LottiMapper;
@@ -17,7 +18,7 @@ public class LottiDao implements LottiDaoInterface {
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-		this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+		this.jdbcTemplateObject = new JdbcTemplate(this.dataSource);
 	}
 
 	@Override

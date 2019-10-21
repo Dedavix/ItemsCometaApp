@@ -1,6 +1,5 @@
 package it.objectmethod.webapp.dao.implemention;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
