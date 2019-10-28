@@ -4,7 +4,7 @@ public class Lotto {
 
 	private int id;
 	private String codice;
-	private int id_articolo;
+	private int idArticolo;
 	private int quantita;
 
 	public int getId() {
@@ -23,12 +23,12 @@ public class Lotto {
 		this.codice = codice;
 	}
 
-	public int getId_articolo() {
-		return id_articolo;
+	public int getIdArticolo() {
+		return idArticolo;
 	}
 
-	public void setId_articolo(int id_articolo) {
-		this.id_articolo = id_articolo;
+	public void setId_articolo(int idArticolo) {
+		this.idArticolo = idArticolo;
 	}
 
 	public int getQuantita() {

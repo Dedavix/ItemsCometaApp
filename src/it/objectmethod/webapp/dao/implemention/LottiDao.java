@@ -30,5 +30,57 @@ public class LottiDao implements LottiDaoInterface {
 		lista = this.jdbcTemplateObject.query(sql, new Object[] { item }, new LottiMapper());
 		return lista;
 	}
+	
+
+	public Lotto codiceLottoInArticolo(String codiceLotto, String codiceArticolo) {
+
+		Lotto lotto = null;
+		String sql;
+		List<Lotto> lotti = null; 
+		sql = "Select lotti.id as id,codice_lotto,id_articolo,quantita from cometa_easy.lotti join cometa_easy.articoli on lotti.id_articolo=articoli.id\n" + 
+				"where codice_lotto = ? and codice= ? ";
+		lotti = this.jdbcTemplateObject.query(sql, new Object[] { codiceLotto, codiceArticolo },new LottiMapper());
+		if(!lotti.isEmpty()) {
+			lotto= lotti.get(0);
+		}
+		return lotto;
+	}
+
+	@Override
+	public Lotto verificaQuantità(String codiceLotto, int quantita) {
+		Lotto lotto = null;
+		List<Lotto> lotti = null;	
+		String sql= "SELECT * from cometa_easy.lotti where codice_lotto = ? and quantita >= ?";
+		lotti = this.jdbcTemplateObject.query(sql, new Object[] { codiceLotto, quantita }, new LottiMapper());
+		if(!lotti.isEmpty()) {
+			lotto= lotti.get(0);
+		}
+		return lotto;
+	}
+
+	@Override
+	public int sottraiQuantita(String codiceLotto, int quantita) {
+		int result = 0;
+		String sql;
+		sql = "UPDATE cometa_easy.lotti SET quantita= quantita - ? WHERE codice_lotto = ? ";
+		result = this.jdbcTemplateObject.update(sql, new Object[] { quantita, codiceLotto });
+		return result;
+	}
+
+	@Override
+	public int aggiungiQuantita(String codiceLotto, int quantita) {
+		int result = 0;
+		String sql;
+		sql = "UPDATE cometa_easy.lotti SET quantita= quantita + ? WHERE codice_lotto = ? ";
+		result = this.jdbcTemplateObject.update(sql, new Object[] { quantita, codiceLotto });
+		return result;
+	}
+
+	@Override
+	public int getIdByCode(String codice, int idArticolo) {
+		String sql = "Select lotti.id from cometa_easy.lotti where codice_lotto = ? and id_articolo= ?";
+		int id = this.jdbcTemplateObject.queryForObject(sql, new Object[] { codice, idArticolo }, Integer.class);
+		return id;
+	}
 
 }

@@ -44,9 +44,13 @@ public class ArticoliDao extends NamedParameterJdbcDaoSupport implements Articol
 	@Override
 	public Articolo searchByCode(String codice) {
 		Articolo articolo = null;
+		List<Articolo> articoli = null;
 		String sql = "SELECT * FROM articoli WHERE articoli.codice=?";
 		BeanPropertyRowMapper<Articolo> rm = new BeanPropertyRowMapper<Articolo>(Articolo.class);
-		articolo = getJdbcTemplate().queryForObject(sql, new Object[] { codice }, rm);
+		articoli = getJdbcTemplate().query(sql, new Object[] { codice }, rm);
+		if(!articoli.isEmpty()) {
+			articolo= articoli.get(0);
+		}
 		return articolo;
 	}
 

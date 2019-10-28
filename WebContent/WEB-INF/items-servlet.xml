@@ -15,7 +15,7 @@
 	<context:component-scan
 		base-package="it.objectmethod.webapp" />
 	<mvc:default-servlet-handler />
-	
+
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
@@ -25,17 +25,32 @@
 		<property name="username" value="root" />
 		<property name="password" value="rootroot" />
 	</bean>
-	
+
 	<bean id="lottiDao"
 		class="it.objectmethod.webapp.dao.implemention.LottiDao">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<bean id="articoliDao"
 		class="it.objectmethod.webapp.dao.implemention.ArticoliDao">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+
+	<bean id="documentiDao"
+		class="it.objectmethod.webapp.dao.implemention.DocumentiDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 	
+	<bean id="righeDao"
+		class="it.objectmethod.webapp.dao.implemention.RigheDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="profiliDao"
+		class="it.objectmethod.webapp.dao.implemention.ProfiloDocumentoDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<property name="viewClass"
