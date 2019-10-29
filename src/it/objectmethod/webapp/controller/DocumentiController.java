@@ -46,25 +46,61 @@ public class DocumentiController {
 	@Autowired
 	private ProfiloDocumentoInterface profiliDao;
 
-	public boolean validateInsert(Documento doc) {
-		Lotto lotto = null;
-		lotto = lottiDao.codiceLottoInArticolo(doc.getRighe().get(0).codiceLotto, doc.getRighe().get(0).codiceArticolo);
-		Articolo articolo = articoliDao.searchByCode(doc.getRighe().get(0).codiceArticolo);
-		boolean value = false;
-		if (articolo != null) {
-			if (lotto != null) {
-				if (doc.getProfilo().equals("SCARICO") || doc.getProfilo().equals("DDT")) {
-					lotto = lottiDao.verificaQuantità(doc.getRighe().get(0).codiceLotto,
-							doc.getRighe().get(0).quantita);
-					if (lotto != null) {
-						value = true;
-					}
-				} else {
-					value = true;
+	@GetMapping("/Inserisci")
+	public String mostraInserimento(ModelMap model) {
+		List<ProfiloDocumento> profiles = profiliDao.getProfiles();
+		model.addAttribute("profiles", profiles);
+		return "insertDocument";
+	}
+
+	@GetMapping("/effettuaInserimento")
+	public String inserisci(@RequestParam(value = "profilo") int profilo, @RequestParam(value = "data") String data,
+			@RequestParam(value = "codiceArticolo") String codiceArticolo,
+			@RequestParam(value = "codiceLotto") String codiceLotto,
+			@RequestParam(value = "quantita", defaultValue = "0") int quantita, ModelMap model) throws ParseException {
+
+		String outputPage = "forward:/Inserisci";
+		int update = 1;
+
+		Documento doc = new Documento();
+		List<RigaDocumento> listRighe = new ArrayList<RigaDocumento>();
+
+		RigaDocumento riga = new RigaDocumento();
+		riga.setCodiceArticolo(codiceArticolo);
+		riga.setCodiceLotto(codiceLotto);
+		riga.setQuantita(quantita);
+
+		listRighe.add(riga);
+		doc.setRighe(listRighe);
+
+		String codProf = profiliDao.getCodeById(profilo); // In questo contesto non serve, più che altro dovremmo
+															// prelevare un oggetto di tipo ProfiloDocumento per la fase
+															// successiva
+		doc.setProfilo(codProf);
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data); // Non chiamiamo direttamente metodi sul new
+																	// SimpleDateFormat, vedi mostra documenti
+		doc.setData(date);
+
+		boolean isValid = validateInsert(doc);
+		if (isValid) {
+			if (doc.getProfilo().equals("CARICO")) { // La verifica andrebbe fatta su un oggetto di tipo
+														// ProfiloDocumento e verificare la colonna movimenta_merce
+				update = lottiDao.aggiungiQuantita(codiceLotto, quantita);
+			}
+			if (doc.getProfilo().equals("SCARICO") || doc.getProfilo().equals("DDT")) { // idem sopra
+				update = lottiDao.sottraiQuantita(codiceLotto, quantita);
+			}
+			if (update > 0) {
+				boolean inserito = inserisciDocumento(doc, profilo, quantita);
+				if (inserito) {
+					outputPage = "forward:/MostraDocumenti";
 				}
 			}
+
+		} else {
+			// gestione messaggi di errore...
 		}
-		return value;
+		return outputPage;
 	}
 
 	public boolean inserisciDocumento(Documento doc, int idProfilo, int quantita) {
@@ -87,53 +123,55 @@ public class DocumentiController {
 		int inserisciDocumento = documentiDao.inserisciDocumento(idProfilo, doc.getData(), progressivo);
 		int idDocumento = documentiDao.getIdDocumento(progressivo, idProfilo, doc.getData());
 		int inserisciRiga = righeDao.inserisciRiga(idDocumento, articolo.getId(),
-				lottiDao.getIdByCode(doc.getRighe().get(0).getCodiceLotto(), articolo.getId()), quantita);
+				lottiDao.getIdByCode(doc.getRighe().get(0).getCodiceLotto(), articolo.getId()), quantita); //TERRIBILE non si capisce ne cosa fa e potrebbe creare errori tremendi
 		if (inserisciRiga > 0 && inserisciDocumento > 0) {
 			value = true;
 		}
 		return value;
 	}
 
-	@GetMapping("/Inserisci")
-	public String mostraInserimento(ModelMap model) {
-		List<ProfiloDocumento> profiles = profiliDao.getProfiles();
-		model.addAttribute("profiles", profiles);
-		return "insertDocument";
-	}
+	public boolean validateInsert(Documento doc) {
 
-	@GetMapping("/effettuaInserimento")
-	public String inserisci(@RequestParam(value = "profilo") int profilo, @RequestParam(value = "data") String data,
-			@RequestParam(value = "codiceArticolo") String codiceArticolo,
-			@RequestParam(value = "codiceLotto") String codiceLotto,
-			@RequestParam(value = "quantita", defaultValue = "0") int quantita, ModelMap model) throws ParseException {
-		Documento doc = new Documento();
-		RigaDocumento riga = new RigaDocumento();
-		List<RigaDocumento> listRighe = new ArrayList<RigaDocumento>();
-		riga.setCodiceArticolo(codiceArticolo);
-		riga.setCodiceLotto(codiceLotto);
-		riga.setQuantita(quantita);
-		listRighe.add(riga);
-		doc.setRighe(listRighe);
-		int update = 1;
-		String outputPage = "forward:/Inserisci";
-		doc.setProfilo(profiliDao.getCodeById(profilo));
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
-		doc.setData(date);
-		if (validateInsert(doc)) {
-			if (doc.getProfilo().equals("CARICO")) {
-				update = lottiDao.aggiungiQuantita(codiceLotto, quantita);
-			}
-			if (doc.getProfilo().equals("SCARICO") || doc.getProfilo().equals("DDT")) {
-				update = lottiDao.sottraiQuantita(codiceLotto, quantita);
-			}
-			if (update > 0) {
-				if (inserisciDocumento(doc, profilo, quantita)) {
-					outputPage = "forward:/MostraDocumenti";
+		Lotto lotto = null;
+
+		lotto = lottiDao.codiceLottoInArticolo(doc.getRighe().get(0).codiceLotto // TODO ERRORE GRAVE, accesso diretto a
+																					// una variabile senza getter o
+																					// setter
+				, doc.getRighe().get(0).codiceArticolo); // Errato comunque concatenare tante chiamate a metodi su una
+															// riga, se qualcosa va in errore
+															// diventa incasinato capire cosa, inoltre aumentiamo le
+															// probabilità di errore
+		Articolo articolo = articoliDao.searchByCode(doc.getRighe().get(0).codiceArticolo); // Stesso discorso di su
+
+		boolean value = false;
+		if (articolo != null) {
+			if (lotto != null) {
+				if (doc.getProfilo().equals("SCARICO") || doc.getProfilo().equals("DDT")) { // Verifica va fatta sulla
+																							// colonna MOVIMENTA MERCE
+																							// (in questo caso != '-')
+
+					lotto = lottiDao.verificaQuantità(doc.getRighe().get(0).codiceLotto, // No accenti nei nomi dei
+																							// metodi!!
+							doc.getRighe().get(0).quantita);
+					// Altro errore, il lotto lo abbiamo gia e sappiamo che e' diverso da null,
+					// basta verificare la quantita
+//					if(lotto.getQuantita() >= riga.getQuantita()) {
+//						OK
+//					}
+					if (lotto != null) {
+						value = true; // Gestito un messaggio di errore più che un boolean
+					}
+				} else {
+					value = true; // Idem, messaggio errore
 				}
 			}
-
 		}
-		return outputPage;
+
+		// Io di solito per codificare i tipi di errore mi creo un ENUM
+		// chiamata tipo StatoInserimentoDocumentoEnum
+		// (OK ("Inserimento con successo!"), ERR_LOTTO("Errore ricerca lotto, il lotto
+		// indicato non esiste: "), ERR_ART("blabla")
+		return value;
 	}
 
 	@RequestMapping("/MostraDocumenti")

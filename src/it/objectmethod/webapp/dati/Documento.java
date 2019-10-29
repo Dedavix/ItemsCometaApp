@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class Documento {
-	
+
 	private String profilo;
 	private Date data;
 	private int progressivo;
