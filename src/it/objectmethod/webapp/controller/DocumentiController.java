@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -137,15 +138,37 @@ public class DocumentiController {
 
 	@RequestMapping("/MostraDocumenti")
 	public String mostraDocumenti(ModelMap model, @RequestParam(value = "profilo", required = false) Integer idProfilo,
-			@RequestParam(value = "data1", required = false) String data1,
-			@RequestParam(value = "data2", required = false) String data2) throws ParseException {
-		List<Documento> documenti = documentiDao.getDocumenti();
+			@RequestParam(value = "data1", required = false) String dateFromReq,
+			@RequestParam(value = "data2", required = false) String dateToReq) throws ParseException {
+
+//		List<Documento> documenti = documentiDao.getDocumenti(); NO non prelevare comunque tutti, fare in modo che il metodo filtrato possa ritornare tutti i dati se usati senza filtri
+
+		List<Documento> documenti = null;
 		List<ProfiloDocumento> profiles = profiliDao.getProfiles();
-		if (data1 != null && data2 != null) {
-			Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(data1);
-			Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(data2);
-			documenti = documentiDao.getFilteredDocuments(idProfilo, date1, date2);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		Calendar calFrom = Calendar.getInstance();
+		calFrom.set(Calendar.YEAR, 1900);
+		Date dateFrom = calFrom.getTime();
+
+		if (!StringUtils.isEmpty(dateFromReq)) {
+			dateFrom = sdf.parse(dateFromReq);
 		}
+
+		Calendar calTo = Calendar.getInstance();
+		calTo.set(Calendar.YEAR, 2200);
+		Date dateTo = calTo.getTime();
+
+		if (!StringUtils.isEmpty(dateToReq)) {
+			dateTo = sdf.parse(dateToReq);
+		}
+
+		if (idProfilo == null) {
+			idProfilo = 0;
+		}
+		documenti = documentiDao.getFilteredDocuments(idProfilo, dateFrom, dateTo);
+
 		model.addAttribute("profiles", profiles);
 		model.addAttribute("listaDocumenti", documenti);
 		return "showDocuments";

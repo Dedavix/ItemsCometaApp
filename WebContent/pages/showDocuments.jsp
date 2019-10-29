@@ -27,6 +27,7 @@ table, th, td {
 	<form name="form" method="post" action ="/ItemsApp/MostraDocumenti">
 	        <p align ="left">Filtro: </p>
 			<select name="profilo" required="required" style='margin:5px'>
+			    <option value="0">Nessun Profilo</option>
 				<c:forEach items="${profiles}" var="profile">
 					<option value="${profile.id}">${profile.codice}</option>
 				</c:forEach>
